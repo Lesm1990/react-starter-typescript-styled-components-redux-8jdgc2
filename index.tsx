@@ -103,10 +103,10 @@ class App extends Component<{}, AppState> {
   }
 
   ActionColumn(params){
-    const { edit, check, onClickActivate, key, status, onChangeInput } = params;
+    const { edit, check, onClickActivate, index, status, onChangeInput } = params;
     return (<Button 
               variant={status ? 'outline-danger' : 'outline-success' } 
-              onClick={() => onClickActivate(key)}
+              onClick={() => onClickActivate(index)}
               disabled={(edit && check)}
               onChange={onChangeInput}
             >
@@ -192,7 +192,15 @@ class App extends Component<{}, AppState> {
                               onChangeInput={(event) => { onChangeInput(event, element, index) }} 
                             />
                           </td>
-                          <td><ActionColumn key={index} edit={edit} check={check} onClickActivate={onClickActivate} status={status}/></td>
+                          <td>
+                            <ActionColumn 
+                              index={index} 
+                              edit={edit} 
+                              check={check} 
+                              onClickActivate={(index) => onClickActivate(index)} 
+                              status={status}
+                            />
+                          </td>
                         </tr>)
               })
             }
