@@ -1,9 +1,20 @@
 import { Action } from "redux";
-import { GenericEntityState, ResponseAction } from "../types";
+import { GenericEntityState, ResponseAction, InitialState, Row } from "../types";
 
+const initialState = {
+    data: [],
+      page: 0,
+      pages: 0,
+      tpage: 5
+  };
 //@ts-ignore
 function defaultMapper(state: GenericEntityState, action: Action) {
     return ({});
+}
+
+function updateState(state: InitialState = initialState, action: Action) {
+  return state;
+    //return ({});
 }
 
 export default function createFetchReducer(

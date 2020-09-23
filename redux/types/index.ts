@@ -49,3 +49,17 @@ export type GenericAPIResponse = {
   status: number;
   message: string;
 };
+
+export type Row = {
+  check: boolean, 
+  name: string, 
+  status: boolean, 
+  label: string
+};
+
+export type InitialState = {
+  data: Row[], 
+  page: number, 
+  pages: number, 
+  tpage: number
+};

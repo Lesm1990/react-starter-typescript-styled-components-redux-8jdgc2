@@ -6,9 +6,18 @@ import {
 
   import httpHandler from "./middleware/http-handler";
   import { useAppDispatch } from "./types";
+
+  const initialState = {
+    data: [],
+      page: 0,
+      pages: 0,
+      tpage: 5
+  };
+
   const reducers = combineReducers({
       //... reducers go here
   });
+  
   const store = configureStore({
     reducer: reducers,
     middleware: [

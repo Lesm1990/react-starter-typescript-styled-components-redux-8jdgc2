@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import { ButtonCounter } from "./ButtonCounter";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Pagination from 'react-bootstrap/Pagination';
+import { Provider } from 'react-redux';
+import store from './store';
+//import { IActions, setLocale } from './actions';
+//import reducers, {IState as IReducerState} from './reducers';
+//import { setStore } from './utils/Locale';
 import "./style.css";
 
 interface Row {
@@ -139,85 +143,87 @@ class App extends Component<{}, AppState> {
     const {data, edit} = state;
     
     return (
-      <div className="container mt-3">
-        <h1 className="text-center">React Test</h1>
-        <Table striped hover>
-          <thead>
-            <tr>
-              <th scope="col"><input type="checkbox" name="select" disabled/></th>
-              <th scope="col">Name</th>
-              <th scope="col">Descripción</th>
-              <th scope="col">Estado</th>
-              <th scope="col">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              data.map(function(element, index){
-                const {check, name, status, label} = element;
-                return (<tr key={index}>
-                          <th scope="row">
-                            <CheckColumn 
-                              key={index} 
-                              cheack={check} 
-                              onChange={(event) => { onChange(event) }} 
-                              value={index}
-                              edit={edit}
-                            />
-                          </th>
-                          <td>
-                            <NameColumn 
-                              key={index} 
-                              name={name} 
-                              edit={edit} 
-                              check={check}
-                              onChangeInput={(event) => { onChangeInput(event, element, index) }} 
-                            />
-                          </td>
-                          <td>
-                            <DescriptionColumn 
-                              key={index} 
-                              label={label} 
-                              edit={edit} 
-                              check={check}
-                              onChangeInput={(event) => { onChangeInput(event, element, index) }} 
-                            />
-                          </td>
-                          <td>
-                            <StatusColumn 
-                              key={index}
-                              status={status}
-                              edit={edit}
-                              check={check}
-                              onChangeInput={(event) => { onChangeInput(event, element, index) }} 
-                            />
-                          </td>
-                          <td>
-                            <ActionColumn 
-                              index={index} 
-                              edit={edit} 
-                              check={check} 
-                              onClickActivate={(index) => onClickActivate(index)} 
-                              status={status}
-                            />
-                          </td>
-                        </tr>)
-              })
-            }
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colSpan={3}>
-                <Button variant="outline-danger" onClick={this.onClickDelete}>Delete</Button> {' '}
-                <Button variant="outline-primary" onClick={this.onClickEdit}>{edit ? 'Save': 'Edit'}</Button>
-              </td>
-              <td colSpan={2}>
-                <PaginationCustom />
-              </td>
-            </tr>
-          </tfoot>
-        </Table>
-      </div>
+      <Provider store={store}>
+        <div className="container mt-3">
+          <h1 className="text-center">React Test</h1>
+          <Table striped hover>
+            <thead>
+              <tr>
+                <th scope="col"><input type="checkbox" name="select" disabled/></th>
+                <th scope="col">Name</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                data.map(function(element, index){
+                  const {check, name, status, label} = element;
+                  return (<tr key={index}>
+                            <th scope="row">
+                              <CheckColumn 
+                                key={index} 
+                                cheack={check} 
+                                onChange={(event) => { onChange(event) }} 
+                                value={index}
+                                edit={edit}
+                              />
+                            </th>
+                            <td>
+                              <NameColumn 
+                                key={index} 
+                                name={name} 
+                                edit={edit} 
+                                check={check}
+                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                              />
+                            </td>
+                            <td>
+                              <DescriptionColumn 
+                                key={index} 
+                                label={label} 
+                                edit={edit} 
+                                check={check}
+                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                              />
+                            </td>
+                            <td>
+                              <StatusColumn 
+                                key={index}
+                                status={status}
+                                edit={edit}
+                                check={check}
+                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                              />
+                            </td>
+                            <td>
+                              <ActionColumn 
+                                index={index} 
+                                edit={edit} 
+                                check={check} 
+                                onClickActivate={(index) => onClickActivate(index)} 
+                                status={status}
+                              />
+                            </td>
+                          </tr>)
+                })
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan={3}>
+                  <Button variant="outline-danger" onClick={this.onClickDelete}>Delete</Button> {' '}
+                  <Button variant="outline-primary" onClick={this.onClickEdit}>{edit ? 'Save': 'Edit'}</Button>
+                </td>
+                <td colSpan={2}>
+                  <PaginationCustom />
+                </td>
+              </tr>
+            </tfoot>
+          </Table>
+        </div>
+      </Provider>
     );
   }
 }
