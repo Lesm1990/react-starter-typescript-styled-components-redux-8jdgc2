@@ -1,35 +1,13 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 import { render } from "react-dom";
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Pagination from 'react-bootstrap/Pagination';
+import { Row, AppState } from './types';
 
-interface Row {
-  check: boolean, name: string, status: boolean, label: string
-}
-
-interface AppState {
-  data: Row[], edit: boolean, page: number, pages: number, tpage: number
-}
-
-const initialState: AppState = {
-  data: [],
-  edit: false,
-  page: 0,
-  pages: 0,
-  tpage: 5
-};
-
-const reducers = (state: AppState = initialState, action: any) => {
-  console.log(state);
-  console.log(action);
-  return state;
-};
-
-const store = createStore(reducers);
-
-class App extends Component<{}, AppState> {
+class Test extends Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,6 +28,43 @@ class App extends Component<{}, AppState> {
     this.onChangeInput = this.onChangeInput.bind(this);
     this.PaginationCustom = this.PaginationCustom.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+  }
+
+  componentDidMount(){
+    console.log('consultar datos de la api');
+    /** DATOS DE PRUEBA **/
+      const list = [
+        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
+      ];
+      /** FIN DE DATOS DE PRUEBA **/
+      const tam_page = 5;
+      const total_pages = Math.ceil(list.length / tam_page);
+      const response = { data: list,
+        list_view: [],
+        edit: false,
+        page: 0,
+        pages: total_pages,
+        tpage: tam_page
+      };
+      this.props.dispatch({
+        type: 'LOAD_LIST',
+        response
+      });
   }
 
   onChange(event){
@@ -129,8 +144,8 @@ class App extends Component<{}, AppState> {
   }
 
   PaginationCustom() {
-    const {onChangePage} = this;
-    const {page, pages} = this.state;
+    const {onChangePage, props} = this;
+    const {page, pages} = this.props;
     const total = pages - 1;
     return (<Pagination className="float-right">
                   <Pagination.Prev onClick={(e) => this.setState({page: page - 1})} disabled={page===0}/>
@@ -144,16 +159,21 @@ class App extends Component<{}, AppState> {
   }
 
   onChangePage(page) {
-    this.setState({page});
+    //this.setState({page});
+    console.log('actualizar pagina');
+    this.props.dispatch({
+        type: 'CHANGE_PAGE',
+        response: { page }
+      });
     console.log('actualizar tabla');
   }
 
   render() {
-    const {state, CheckColumn, onChange, onClickActivate, NameColumn, DescriptionColumn, ActionColumn, StatusColumn, onChangeInput, PaginationCustom} = this;
-    const {data, edit} = state;
+    const {props, state, CheckColumn, onChange, onClickActivate, NameColumn, DescriptionColumn, ActionColumn, StatusColumn, onChangeInput, PaginationCustom} = this;
+    const { list_view } = props;
+    const {edit} = state;
     
     return (
-      <Provider store={store}>
         <div className="container mt-3">
           <h1 className="text-center">React Test</h1>
           <Table striped hover>
@@ -168,7 +188,7 @@ class App extends Component<{}, AppState> {
             </thead>
             <tbody>
               {
-                data.map(function(element, index){
+                list_view.map(function(element, index){
                   const {check, name, status, label} = element;
                   return (<tr key={index}>
                             <th scope="row">
@@ -233,9 +253,19 @@ class App extends Component<{}, AppState> {
             </tfoot>
           </Table>
         </div>
-      </Provider>
     );
   }
 }
 
-render(<App />, document.getElementById("root"));
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    list_view: state.list_view,
+    edit: state.edit,
+    page: state.page,
+    pages: state.pages,
+    tpage: state.tpage
+  }
+}
+
+export default connect(mapStateToProps)(Test);
