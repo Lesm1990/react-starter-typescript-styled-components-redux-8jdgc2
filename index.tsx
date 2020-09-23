@@ -5,10 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Pagination from 'react-bootstrap/Pagination';
 import { Provider } from 'react-redux';
-import store from './store';
-//import { IActions, setLocale } from './actions';
-//import reducers, {IState as IReducerState} from './reducers';
-//import { setStore } from './utils/Locale';
+import { createStore } from "redux";
 import "./style.css";
 
 interface Row {
@@ -18,6 +15,22 @@ interface Row {
 interface AppState {
   data: Row[], edit: boolean, page: number, pages: number, tpage: number
 }
+
+const initialState: AppState = {
+  data: [],
+  edit: false,
+  page: 0,
+  pages: 0,
+  tpage: 5
+};
+
+const reducers = (state: AppState = initialState, action: any) => {
+  console.log(state);
+  console.log(action);
+  return state;
+};
+
+const store = createStore(reducers);
 
 class App extends Component<{}, AppState> {
   constructor(props) {
