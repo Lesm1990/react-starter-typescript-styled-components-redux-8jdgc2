@@ -69,12 +69,14 @@ class Test extends Component<{}, AppState> {
     });
   };
 
-  onChangeInput(event, row, index){
-    const {target: {name, value, type, checked}} = event;
-    let { data } = this.state;
+  onChangeInput(event, row){
+    const {target: {name, value, type}} = event;
+    const {id} = row;
     const _value = type === 'select-one' ? (value == 1 ? true : false) : value;
-    data[index][name] = _value;
-    this.setState({data});
+    this.props.dispatch({
+        type: 'EDIT_ROW',
+        response: {id, name, value: _value}
+    });
   };
 
   onClickDelete(){
@@ -89,9 +91,13 @@ class Test extends Component<{}, AppState> {
   };
 
   onClickActivate(index){
-    let {data} = this.state;
+    /*let {data} = this.props;
     data[index].status = !data[index].status;
-    this.setState({data});
+    this.setState({data});*/
+    this.props.dispatch({
+        type: 'ACTIVATE_ROW',
+        response: { id: index }
+      });
   };
 
   onClickEdit(){
@@ -108,13 +114,13 @@ class Test extends Component<{}, AppState> {
   };
 
   NameColumn(params){
-    const { name, edit, check, onChangeInput } = params;
-    return (edit && check) ? (<input type="text" name="name" value={name} className={'form-control'} onChange={onChangeInput}/>) : name;
+    const { name, edit, check, row, onChangeInput } = params;
+    return (edit && check) ? (<input type="text" name="name" value={name} className={'form-control'} onChange={(event) => onChangeInput(event, row)}/>) : name;
   }
 
   StatusColumn(params){
-    const { edit, status, check, onChangeInput } = params;
-    return (edit && check) ? (<select name="status" className="form-control" onChange={onChangeInput} defaultValue={status ? 1 : 0}>
+    const { edit, status, check, row, onChangeInput } = params;
+    return (edit && check) ? (<select name="status" className="form-control" onChange={(event) => onChangeInput(event, row)} defaultValue={status ? 1 : 0}>
                                 <option key={`s-0`} value={1} selected={status}>Active</option>
                                 <option key={`s-1`} value={0} selected={!status}>Inactive</option>
                               </select>) : (<Badge variant={status ? "success" : "danger"}>
@@ -123,8 +129,8 @@ class Test extends Component<{}, AppState> {
   }
   
   DescriptionColumn(params){
-    const { edit, label, check, onChangeInput } = params;
-    return (edit && check) ? (<input type="text" name="label" value={label} className={'form-control'} onChange={onChangeInput}/>) : label;
+    const { edit, label, check, row, onChangeInput } = params;
+    return (edit && check) ? (<input type="text" name="label" value={label} className={'form-control'} onChange={(event) => onChangeInput(event, row)}/>) : label;
   }
 
   ActionColumn(params){
@@ -200,7 +206,8 @@ class Test extends Component<{}, AppState> {
                                 name={name} 
                                 edit={edit} 
                                 check={check}
-                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                                row={element}
+                                onChangeInput={(event, row) => { onChangeInput(event, row) }} 
                               />
                             </td>
                             <td>
@@ -209,7 +216,8 @@ class Test extends Component<{}, AppState> {
                                 label={label} 
                                 edit={edit} 
                                 check={check}
-                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                                row={element}
+                                onChangeInput={(event, row) => { onChangeInput(event, row) }} 
                               />
                             </td>
                             <td>
@@ -218,12 +226,13 @@ class Test extends Component<{}, AppState> {
                                 status={status}
                                 edit={edit}
                                 check={check}
-                                onChangeInput={(event) => { onChangeInput(event, element, index) }} 
+                                row={element}
+                                onChangeInput={(event, row) => { onChangeInput(event, row) }} 
                               />
                             </td>
                             <td>
                               <ActionColumn 
-                                index={index} 
+                                index={element.id} 
                                 edit={edit} 
                                 check={check} 
                                 onClickActivate={(index) => onClickActivate(index)} 

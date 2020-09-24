@@ -1,5 +1,5 @@
 import { createStore } from "redux";
-import { AppState } from './types';
+import { Row, AppState } from './types';
 
 const initialState: AppState = {
   data: [],
@@ -69,6 +69,42 @@ const reducers = (state: AppState = initialState, action: any) => {
         pages,
         tpage
       };
+    case 'EDIT_ROW':  
+      const {id, name} = action.response;
+      let _data = state.data;
+      _data = _data.map((row) => {
+        if(row.id === Number(id)){
+          row[name] = action.response.value;
+        }
+        return row;
+      });
+      const { page, pages, tpage} = state;
+      const list_view = updatePage(page, tpage, _data);
+      return {
+        data: _data,
+        list_view,
+        page, 
+        pages,
+        tpage
+      };
+    case 'ACTIVATE_ROW':  
+      const { list_view, page, pages, tpage} = state;
+      let { data } = state;
+      data = data.map((row) => {
+        if(row.id === action.response.id){
+          console.log(row.id);
+          row.status = !row.status;
+        }
+        return row;
+      });
+      const list_view = updatePage(page, tpage, data);
+      return {
+        data,
+        list_view,
+        page, 
+        pages,
+        tpage
+      };  
     default:
       return state;
   }
