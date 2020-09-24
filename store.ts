@@ -40,6 +40,23 @@ const reducers = (state: AppState = initialState, action: any) => {
         pages,
         tpage
       };
+    case 'SELECT_ROW':
+      let { data, page, pages, tpage } = state;
+      const {checked, value} = action.response;
+      data = data.map((element) => {
+        const cond = element.id === value;
+        let new_elem = element;
+        element.checked = cond ? checked : element.checked;
+        return element;
+      });
+      const list_view = updatePage(page, tpage, data);
+      return {
+        data, 
+        list_view,
+        page,
+        pages,
+        tpage
+      };  
     default:
       return state;
   }

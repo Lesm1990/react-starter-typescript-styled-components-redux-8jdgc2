@@ -34,22 +34,22 @@ class Test extends Component<{}, AppState> {
     console.log('consultar datos de la api');
     /** DATOS DE PRUEBA **/
       const list = [
-        { check: false, name: 'Lorena Salas 1', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez 2', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas 3', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez 4', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas 5', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez 6', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas 7', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez 8', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas 9', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez 10', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas 11', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez 12', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas 13', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez 14', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas 15', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez 16', status: false, label: 'Datos de Prueba'},
+        { id: 1, check: false, name: 'Lorena Salas 1', status: true, label: 'Descripción de Lorena Salas'},
+        { id: 2, check: false, name: 'Emily Yanez 2', status: false, label: 'Descripción de Emily'},
+        { id: 3, check: false, name: 'Lorena Salas 3', status: true, label: 'Prueba de Descripción'},
+        { id: 4, check: false, name: 'Emily Yanez 4', status: false, label: 'Datos de Prueba'},
+        { id: 5, check: false, name: 'Lorena Salas 5', status: true, label: 'Descripción de Lorena Salas'},
+        { id: 6, check: false, name: 'Emily Yanez 6', status: false, label: 'Descripción de Emily'},
+        { id: 7,check: false, name: 'Lorena Salas 7', status: true, label: 'Prueba de Descripción'},
+        { id: 8, check: false, name: 'Emily Yanez 8', status: false, label: 'Datos de Prueba'},
+        { id: 9, check: false, name: 'Lorena Salas 9', status: true, label: 'Descripción de Lorena Salas'},
+        { id: 10, check: false, name: 'Emily Yanez 10', status: false, label: 'Descripción de Emily'},
+        { id: 11, check: false, name: 'Lorena Salas 11', status: true, label: 'Prueba de Descripción'},
+        { id: 12, check: false, name: 'Emily Yanez 12', status: false, label: 'Datos de Prueba'},
+        { id: 13, check: false, name: 'Lorena Salas 13', status: true, label: 'Descripción de Lorena Salas'},
+        { id: 14, check: false, name: 'Emily Yanez 14', status: false, label: 'Descripción de Emily'},
+        { id: 15, check: false, name: 'Lorena Salas 15', status: true, label: 'Prueba de Descripción'},
+        { id: 16, check: false, name: 'Emily Yanez 16', status: false, label: 'Datos de Prueba'},
       ];
       /** FIN DE DATOS DE PRUEBA **/
       const tam_page = 5;
@@ -71,8 +71,10 @@ class Test extends Component<{}, AppState> {
     const {target: {name, value, type, checked}} = event;
     let { data } = this.state;
     const _value = type === 'checkbox' ? checked : value;
-    data[value][name] = _value;
-    this.setState({data});
+    this.props.dispatch({
+        type: 'SELECT_ROW',
+        response: {checked, value}
+    });
   };
 
   onChangeInput(event, row, index){
@@ -187,14 +189,14 @@ class Test extends Component<{}, AppState> {
             <tbody>
               {
                 list_view.map(function(element, index){
-                  const {check, name, status, label} = element;
+                  const {id, check, name, status, label} = element;
                   return (<tr key={index}>
                             <th scope="row">
                               <CheckColumn 
                                 key={index} 
                                 cheack={check} 
                                 onChange={(event) => { onChange(event) }} 
-                                value={index}
+                                value={id}
                                 edit={edit}
                               />
                             </th>

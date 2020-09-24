@@ -1,5 +1,5 @@
 export interface Row {
-  check: boolean, name: string, status: boolean, label: string
+  id: number, check: boolean, name: string, status: boolean, label: string
 };
 
 export interface AppState {
