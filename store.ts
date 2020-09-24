@@ -10,14 +10,18 @@ const initialState: AppState = {
   tpage: 5
 };
 
+const updatePage = (page, tpage, data) => {
+      const p_init = page * tpage;
+      const p_end = ((page + 1) * tpage);
+      const list_view = data.slice(p_init, p_end);
+    return list_view;
+};
+
 const reducers = (state: AppState = initialState, action: any) => {
   switch(action.type){
     case 'LOAD_LIST':
       const { data, page, pages, tpage } = action.response;
-      const p_init = page * tpage;
-      const p_end = ((page + 1) * tpage) - 1;
-      //const p_e = p_end > data.length ? data.length : p_end;
-      const list_view = data.slice(p_init, tpage);
+      const list_view = updatePage(page, tpage, data);
       return {
         data, 
         list_view,
@@ -26,9 +30,16 @@ const reducers = (state: AppState = initialState, action: any) => {
         tpage
       };
     case 'CHANGE_PAGE':
-      console.log(state);
-      console.log(action);
-      return state;
+      const { page } = action.response;
+      const { data, pages, tpage } = state;
+      const list_view = updatePage(page, tpage, data);
+      return {
+        data, 
+        list_view,
+        page,
+        pages,
+        tpage
+      };
     default:
       return state;
   }

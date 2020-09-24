@@ -34,22 +34,22 @@ class Test extends Component<{}, AppState> {
     console.log('consultar datos de la api');
     /** DATOS DE PRUEBA **/
       const list = [
-        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Descripción de Lorena Salas'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Descripción de Emily'},
-        { check: false, name: 'Lorena Salas', status: true, label: 'Prueba de Descripción'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas 1', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez 2', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas 3', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez 4', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas 5', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez 6', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas 7', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez 8', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas 9', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez 10', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas 11', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez 12', status: false, label: 'Datos de Prueba'},
+        { check: false, name: 'Lorena Salas 13', status: true, label: 'Descripción de Lorena Salas'},
+        { check: false, name: 'Emily Yanez 14', status: false, label: 'Descripción de Emily'},
+        { check: false, name: 'Lorena Salas 15', status: true, label: 'Prueba de Descripción'},
+        { check: false, name: 'Emily Yanez 16', status: false, label: 'Datos de Prueba'},
       ];
       /** FIN DE DATOS DE PRUEBA **/
       const tam_page = 5;
@@ -148,24 +148,22 @@ class Test extends Component<{}, AppState> {
     const {page, pages} = this.props;
     const total = pages - 1;
     return (<Pagination className="float-right">
-                  <Pagination.Prev onClick={(e) => this.setState({page: page - 1})} disabled={page===0}/>
+                  <Pagination.Prev onClick={(e) => onChangePage({page: page - 1})} disabled={page===0}/>
                   {(page > 1 && pages > 3) && <Pagination.Ellipsis />}
-                  {page > 0 && <Pagination.Item onClick={(e) => this.setState({page: page - 1})}>{page}</Pagination.Item>}
+                  {page > 0 && <Pagination.Item onClick={(e) => onChangePage({page: page - 1})}>{page}</Pagination.Item>}
                   <Pagination.Item active>{page + 1}</Pagination.Item>
-                  {page < total && <Pagination.Item onClick={(e) => this.setState({page: page + 1})}>{page + 2}</Pagination.Item>}
+                  {page < total && <Pagination.Item onClick={(e) => onChangePage({page: page + 1})}>{page + 2}</Pagination.Item>}
                   {page < (total-1) && <Pagination.Ellipsis />}
-                  <Pagination.Next onClick={(e) => this.setState({page: page + 1})} disabled={page===total}/>
+                  <Pagination.Next onClick={(e) => onChangePage({page: page + 1})} disabled={page===total}/>
                 </Pagination>);
   }
 
-  onChangePage(page) {
-    //this.setState({page});
-    console.log('actualizar pagina');
+  onChangePage(params) {
+    const {page} = params;
     this.props.dispatch({
         type: 'CHANGE_PAGE',
         response: { page }
       });
-    console.log('actualizar tabla');
   }
 
   render() {
