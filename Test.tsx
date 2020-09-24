@@ -11,14 +11,7 @@ class Test extends Component<{}, AppState> {
   constructor(props) {
     super(props);
     this.state = {
-      data: [
-        { check: false, name: 'Lorena Salas', status: true, label: 'Label'},
-        { check: false, name: 'Emily Yanez', status: false, label: 'Label'},
-      ],
-      edit: false,
-      page: 0,
-      pages: 5,
-      tpage: 5
+      edit: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -69,8 +62,8 @@ class Test extends Component<{}, AppState> {
 
   onChange(event){
     const {target: {name, value, type, checked}} = event;
-    let { data } = this.state;
     const _value = type === 'checkbox' ? checked : value;
+    console.log('Linea 66', name, value, checked, _value);
     this.props.dispatch({
         type: 'SELECT_ROW',
         response: {checked, value}
@@ -110,7 +103,7 @@ class Test extends Component<{}, AppState> {
 
   CheckColumn(params){
     const {check, onChange, value, edit} = params;
-    return (<input type="checkbox" name="check" defaultChecked={check} onChange={(event) => {onChange(event)}} value={value} disabled={edit}/>);
+    return (<input type="checkbox" name="check" checked={check} onChange={(event) => {onChange(event)}} value={value} disabled={edit}/>);
   };
 
   NameColumn(params){
@@ -194,7 +187,7 @@ class Test extends Component<{}, AppState> {
                             <th scope="row">
                               <CheckColumn 
                                 key={index} 
-                                cheack={check} 
+                                check={check} 
                                 onChange={(event) => { onChange(event) }} 
                                 value={id}
                                 edit={edit}
