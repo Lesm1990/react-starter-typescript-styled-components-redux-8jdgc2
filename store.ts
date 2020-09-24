@@ -57,7 +57,18 @@ const reducers = (state: AppState = initialState, action: any) => {
         page,
         pages,
         tpage
-      };  
+      };
+    case 'DELETE_ROW':  
+      const {data} = action.response;
+      const {page, pages, tpage} = state;
+      const list_view = updatePage(page, tpage, data);
+      return {
+        data,
+        list_view,
+        page, 
+        pages,
+        tpage
+      };
     default:
       return state;
   }

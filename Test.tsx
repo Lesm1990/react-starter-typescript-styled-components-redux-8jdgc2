@@ -63,7 +63,6 @@ class Test extends Component<{}, AppState> {
   onChange(event){
     const {target: {name, value, type, checked}} = event;
     const _value = type === 'checkbox' ? checked : value;
-    console.log('Linea 66', name, value, checked, _value);
     this.props.dispatch({
         type: 'SELECT_ROW',
         response: {checked, value}
@@ -79,13 +78,14 @@ class Test extends Component<{}, AppState> {
   };
 
   onClickDelete(){
-    let {data} = this.state;
-    data.forEach(function(element, index){
-      if(element.check) {
-        data.splice(index, 1);
-      }
+    let {data} = this.props;
+    data = data.filter((element) => {
+      return !element.check;
     });
-    this.setState({data});
+    this.props.dispatch({
+        type: 'DELETE_ROW',
+        response: { data }
+      });
   };
 
   onClickActivate(index){
@@ -95,7 +95,8 @@ class Test extends Component<{}, AppState> {
   };
 
   onClickEdit(){
-    const {edit, data} = this.state;
+    const {edit} = this.state;
+    const {data} = this.props;
     const total = data.filter((element) => { return element.check }).length;
     if(total > 0)
       this.setState({edit: !edit});
