@@ -24,39 +24,13 @@ class Test extends Component<{}, AppState> {
   }
 
   componentDidMount(){
-    console.log('consultar datos de la api');
-    /** DATOS DE PRUEBA **/
-      const list = [
-        { id: 1, check: false, name: 'Lorena Salas 1', status: true, label: 'Descripción de Lorena Salas'},
-        { id: 2, check: false, name: 'Emily Yanez 2', status: false, label: 'Descripción de Emily'},
-        { id: 3, check: false, name: 'Lorena Salas 3', status: true, label: 'Prueba de Descripción'},
-        { id: 4, check: false, name: 'Emily Yanez 4', status: false, label: 'Datos de Prueba'},
-        { id: 5, check: false, name: 'Lorena Salas 5', status: true, label: 'Descripción de Lorena Salas'},
-        { id: 6, check: false, name: 'Emily Yanez 6', status: false, label: 'Descripción de Emily'},
-        { id: 7,check: false, name: 'Lorena Salas 7', status: true, label: 'Prueba de Descripción'},
-        { id: 8, check: false, name: 'Emily Yanez 8', status: false, label: 'Datos de Prueba'},
-        { id: 9, check: false, name: 'Lorena Salas 9', status: true, label: 'Descripción de Lorena Salas'},
-        { id: 10, check: false, name: 'Emily Yanez 10', status: false, label: 'Descripción de Emily'},
-        { id: 11, check: false, name: 'Lorena Salas 11', status: true, label: 'Prueba de Descripción'},
-        { id: 12, check: false, name: 'Emily Yanez 12', status: false, label: 'Datos de Prueba'},
-        { id: 13, check: false, name: 'Lorena Salas 13', status: true, label: 'Descripción de Lorena Salas'},
-        { id: 14, check: false, name: 'Emily Yanez 14', status: false, label: 'Descripción de Emily'},
-        { id: 15, check: false, name: 'Lorena Salas 15', status: true, label: 'Prueba de Descripción'},
-        { id: 16, check: false, name: 'Emily Yanez 16', status: false, label: 'Datos de Prueba'},
-      ];
-      /** FIN DE DATOS DE PRUEBA **/
-      const tam_page = 5;
-      const total_pages = Math.ceil(list.length / tam_page);
-      const response = { data: list,
-        list_view: [],
-        edit: false,
-        page: 0,
-        pages: total_pages,
-        tpage: tam_page
-      };
       this.props.dispatch({
-        type: 'LOAD_LIST',
-        response
+        type: 'FETCH_LIST',
+        response: { dispatch: (response) => {this.props.dispatch({
+            type: 'LOAD_LIST',
+            response
+          })
+        }}
       });
   }
 
@@ -91,9 +65,6 @@ class Test extends Component<{}, AppState> {
   };
 
   onClickActivate(index){
-    /*let {data} = this.props;
-    data[index].status = !data[index].status;
-    this.setState({data});*/
     this.props.dispatch({
         type: 'ACTIVATE_ROW',
         response: { id: index }
@@ -181,7 +152,7 @@ class Test extends Component<{}, AppState> {
               <tr>
                 <th scope="col"><input type="checkbox" name="select" disabled/></th>
                 <th scope="col">Name</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">Email</th>
                 <th scope="col">Estado</th>
                 <th scope="col">Acción</th>
               </tr>
